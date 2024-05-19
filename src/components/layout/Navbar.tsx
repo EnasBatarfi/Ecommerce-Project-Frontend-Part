@@ -11,6 +11,16 @@ export const Navbar = () => {
           </Link>
         </li>
         <li>
+          <Link className="nav__link" to="/register">
+            Register
+          </Link>
+        </li>
+        <li>
+          <Link className="nav__link" to="/customerLogin">
+            Login
+          </Link>
+        </li>
+        <li>
           <Link className="nav__link" to="/contact">
             Contact
           </Link>

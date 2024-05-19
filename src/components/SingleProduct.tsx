@@ -1,4 +1,4 @@
-import { Product } from "@/types/ProductType"
+import { Product } from "@/types/Types"
 import { Link } from "react-router-dom"
 
 export const SingleProduct = (props: { product: Product }) => {

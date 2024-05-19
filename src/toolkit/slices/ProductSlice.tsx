@@ -1,5 +1,5 @@
 import api from "@/api"
-import { ProductState } from "@/types/ProductType"
+import { ProductState } from "@/types/Types"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 
 const initialState: ProductState = {

@@ -48,7 +48,6 @@ export const Products = () => {
           />
         </div>
         <h2>List of Products</h2>
-
         <div className="flex-center">
           <select name="" id="" onChange={handleSortChange}>
             <option value="Name">Name</option>
