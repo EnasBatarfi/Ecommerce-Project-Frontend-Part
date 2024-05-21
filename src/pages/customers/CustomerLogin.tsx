@@ -1,8 +1,6 @@
 import { AppDispatch } from "@/toolkit/Store"
 import { customerLogin } from "@/toolkit/slices/CustomerSlice"
-import { fetchProductBySlug } from "@/toolkit/slices/ProductSlice"
 import { LoginFormData } from "@/types/Types"
-import React, { useEffect } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
@@ -20,8 +18,9 @@ export const CustomerLogin = () => {
   const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
     try {
       const response = await dispatch(customerLogin(data))
+      const isAdmin = response.payload.data.isAdmin
       toast.success(response.payload.message)
-      //    navigate("/login")
+      navigate(isAdmin ? "/dashboard/admin" : "/dashboard/customer")
     } catch (error: any) {
       toast.error(error.message || "Login failed")
     }

@@ -1,8 +1,9 @@
+import { UploadImage } from "@/components/UploadImage"
 import { AppDispatch } from "@/toolkit/Store"
 import { customerRegister } from "@/toolkit/slices/CustomerSlice"
 import { fetchProductBySlug } from "@/toolkit/slices/ProductSlice"
 import { RegisterFormData } from "@/types/Types"
-import React, { useEffect } from "react"
+import React, { ChangeEvent, useEffect, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
@@ -10,10 +11,12 @@ import { toast } from "react-toastify"
 
 export const Register: React.FC = () => {
   const navigate = useNavigate()
+  const [imagePreview, setImagePreview] = useState<string | null>()
   const dispatch: AppDispatch = useDispatch()
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors }
   } = useForm<RegisterFormData>()
 
@@ -27,10 +30,18 @@ export const Register: React.FC = () => {
     }
   }
 
+  const handleImageUpload = async (url: string) => {
+    setImagePreview(url)
+    setValue("image", url)
+  }
+
   return (
     <div className="register">
       <h2>Customer Registration</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="image-preview">
+          {imagePreview && <img src={imagePreview} alt="Preview" />}
+        </div>
         <div className="form-field">
           <label htmlFor="firstName">First Name: </label>
           <input
@@ -96,11 +107,11 @@ export const Register: React.FC = () => {
           />
           {errors.password && <p>{errors.password.message}</p>}
         </div>
-        {/* <div className="form-field">
-          <label htmlFor="image">Image: </label>
-          <input type="file" {...register("image")} />
+        <div className="form-field">
+          <label htmlFor="image">Profile Image:</label>
+          <UploadImage onUpload={handleImageUpload} />
           {errors.image && <p>{errors.image.message}</p>}
-        </div> */}
+        </div>
         <button type="submit">Register</button>
       </form>
     </div>

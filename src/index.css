@@ -169,6 +169,19 @@ form {
   gap: 0.5rem;
 }
 
+.image-preview {
+  margin-bottom: 20px;
+}
+
+.image-preview img {
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border: 2px solid #ccc;
+  margin-bottom: 10px;
+}
+
 form label {
   display: block;
   margin-bottom: 0.25rem;

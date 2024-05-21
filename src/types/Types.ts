@@ -32,11 +32,12 @@ export type Customer = {
   email: string
   mobile: string
   password: string
-  // image: string
+  image: string
   isBanned?: boolean
   createdAt?: string
   resetToken?: string | null
   resetTokenExpiration?: string | null
+  isAdmin: boolean
   // addresses: Address[];
   // orders: Order[];
   // reviews: Review[];
@@ -46,6 +47,9 @@ export type CustomerState = {
   customer: Customer | null
   error: null | string
   isLoading: boolean
+  customerData: Customer | null
+  token: string | null
+  isLoggedIn: boolean
 }
 
 export type RegisterFormData = {
@@ -54,6 +58,7 @@ export type RegisterFormData = {
   email: string
   mobile: string
   password: string
+  image: string
 }
 
 export type LoginFormData = {
