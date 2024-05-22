@@ -173,6 +173,12 @@ form {
   margin-bottom: 20px;
 }
 
+.round-img {
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+}
+
 .image-preview img {
   border-radius: 50%;
   width: 150px;

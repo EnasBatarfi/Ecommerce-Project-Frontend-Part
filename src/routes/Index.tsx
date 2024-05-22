@@ -3,7 +3,6 @@ import { Navbar } from "@/components/layout/Navbar"
 import {
   AdminDashboard,
   Admins,
-  Categories,
   Contact,
   CustomerDashboard,
   CustomerLogin,
@@ -14,12 +13,18 @@ import {
   Home,
   Orders,
   Register,
-  Products
+  Products,
+  AdminLogin,
+  Categories
 } from "@/pages/ExportPages"
 import { ProductDetails } from "@/pages/ProductDetails"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { ProtectedRoute } from "./ProtectedRoute"
 import { AdminRoute } from "./AdminRoute"
+import { CategoryDetails } from "@/pages/CategoryDetails"
+import { AddCategory } from "@/pages/AddCategory"
+import { AddProductPage } from "@/pages/admins/AddProduct"
+import ProductDetailsAdmin from "@/pages/admins/ProductDetails"
 
 const Index = () => {
   return (
@@ -32,6 +37,7 @@ const Index = () => {
           <Route path="/products/:slug" element={<ProductDetails />} />
           <Route path="/register" element={<Register />} />
           <Route path="/customerLogin" element={<CustomerLogin />} />
+          <Route path="/adminLogin" element={<AdminLogin />} />
 
           <Route path="/dashboard" element={<ProtectedRoute />}>
             <Route path="customer" element={<CustomerDashboard />} />
@@ -42,7 +48,11 @@ const Index = () => {
           <Route path="/dashboard" element={<AdminRoute />}>
             <Route path="admin" element={<AdminDashboard />} />
             <Route path="admin/categories" element={<Categories />} />
+            <Route path="admin/categories/:slug" element={<CategoryDetails />} />
+            <Route path="admin/categories/add" element={<AddCategory />} />
             <Route path="admin/products" element={<Products />} />
+            <Route path="admin/products/add" element={<AddProductPage />} />
+            <Route path="admin/products/:slug" element={<ProductDetailsAdmin />} />
             <Route path="admin/customers" element={<Customers />} />
             <Route path="admin/admins" element={<Admins />} />
             <Route path="admin/orders" element={<Orders />} />

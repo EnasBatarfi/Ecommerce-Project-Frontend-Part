@@ -1,12 +1,17 @@
 import { AppDispatch } from "@/toolkit/Store"
-import { customerLogin } from "@/toolkit/slices/CustomerSlice"
+import { adminLogin } from "@/toolkit/slices/AdminSlice"
+import { customerLogin, fetchCustomerData } from "@/toolkit/slices/CustomerSlice"
 import { LoginFormData } from "@/types/Types"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 
-export const CustomerLogin = () => {
+interface LoginProps {
+  userType: "customer" | "admin"
+}
+
+export const Login = ({ userType }: LoginProps) => {
   const navigate = useNavigate()
   const dispatch: AppDispatch = useDispatch()
   const {
@@ -17,10 +22,24 @@ export const CustomerLogin = () => {
 
   const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
     try {
-      const response = await dispatch(customerLogin(data))
-      const isAdmin = response.payload.data.isAdmin
-      toast.success(response.payload.message)
-      navigate(isAdmin ? "/dashboard/admin" : "/dashboard/customer")
+      const response = await dispatch(
+        userType === "customer" ? customerLogin(data) : adminLogin(data)
+      ).unwrap()
+
+      if (response.token) {
+        if (userType === "customer") {
+          await dispatch(
+            fetchCustomerData({
+              customerId: response.data.userId,
+              token: response.token
+            })
+          )
+        }
+        toast.success("Login successful")
+        navigate(userType === "admin" ? "/dashboard/admin" : "/dashboard/customer")
+      } else {
+        toast.error("Login failed")
+      }
     } catch (error: any) {
       toast.error(error.message || "Login failed")
     }
@@ -28,7 +47,7 @@ export const CustomerLogin = () => {
 
   return (
     <div className="login">
-      <h2>Customer Login</h2>
+      <h2>{userType === "customer" ? "Customer Login" : "Admin Login"}</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-field">
           <label htmlFor="email">Email: </label>

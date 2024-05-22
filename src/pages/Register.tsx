@@ -1,9 +1,8 @@
 import { UploadImage } from "@/components/UploadImage"
 import { AppDispatch } from "@/toolkit/Store"
 import { customerRegister } from "@/toolkit/slices/CustomerSlice"
-import { fetchProductBySlug } from "@/toolkit/slices/ProductSlice"
 import { RegisterFormData } from "@/types/Types"
-import React, { ChangeEvent, useEffect, useState } from "react"
+import React, { ChangeEvent, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
@@ -11,7 +10,7 @@ import { toast } from "react-toastify"
 
 export const Register: React.FC = () => {
   const navigate = useNavigate()
-  const [imagePreview, setImagePreview] = useState<string | null>()
+  const [imagePreview, setImagePreview] = useState<string | null>("")
   const dispatch: AppDispatch = useDispatch()
   const {
     register,
@@ -29,10 +28,17 @@ export const Register: React.FC = () => {
       toast.error(error.message || "Registration failed")
     }
   }
-
-  const handleImageUpload = async (url: string) => {
-    setImagePreview(url)
-    setValue("image", url)
+  const handleImageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (file) {
+      try {
+        const url = await UploadImage(file)
+        setImagePreview(url)
+        setValue("image", url)
+      } catch (error) {
+        toast.error("Image upload failed")
+      }
+    }
   }
 
   return (
@@ -109,7 +115,7 @@ export const Register: React.FC = () => {
         </div>
         <div className="form-field">
           <label htmlFor="image">Profile Image:</label>
-          <UploadImage onUpload={handleImageUpload} />
+          <input type="file" accept="image/*" onChange={handleImageUpload} />
           {errors.image && <p>{errors.image.message}</p>}
         </div>
         <button type="submit">Register</button>

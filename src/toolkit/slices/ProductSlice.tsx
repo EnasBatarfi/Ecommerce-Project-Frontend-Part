@@ -1,5 +1,5 @@
 import api from "@/api"
-import { ProductState } from "@/types/Types"
+import { ProductState, Product, UpdateProductFormData } from "@/types/Types"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 
 const initialState: ProductState = {
@@ -31,6 +31,7 @@ export const fetchProducts = createAsyncThunk(
     return response.data
   }
 )
+
 export const fetchProductBySlug = createAsyncThunk(
   "products/fetchProductBySlug",
   async (slug: string | undefined) => {
@@ -39,9 +40,48 @@ export const fetchProductBySlug = createAsyncThunk(
   }
 )
 
+export const addProduct = createAsyncThunk(
+  "products/addProduct",
+  async ({ token, newProductInfo }: { token: string; newProductInfo: Product }) => {
+    console.log(newProductInfo)
+    const response = await api.post("/products", newProductInfo, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    return response.data
+  }
+)
+
+export const updateProduct = createAsyncThunk(
+  "products/updateProduct",
+  async ({
+    productId,
+    token,
+    updateProductInfo
+  }: {
+    productId: string
+    token: string
+    updateProductInfo: UpdateProductFormData
+  }) => {
+    const response = await api.put(`/products/${productId}`, updateProductInfo, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    return response.data
+  }
+)
+
+export const deleteProduct = createAsyncThunk(
+  "products/deleteProduct",
+  async ({ productId, token }: { productId: string; token: string }) => {
+    const response = await api.delete(`/products/${productId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    return response.data
+  }
+)
+
 const productSlice = createSlice({
   name: "products",
-  initialState: initialState,
+  initialState,
   reducers: {},
   extraReducers(builder) {
     builder.addCase(fetchProducts.fulfilled, (state, action) => {
@@ -61,6 +101,39 @@ const productSlice = createSlice({
       state.error = action.error.message || "An error occurred"
       state.isLoading = false
     })
+    builder.addCase(addProduct.fulfilled, (state, action) => {
+      state.products.push(action.payload.data)
+      state.isLoading = false
+      state.error = null
+    })
+    builder.addCase(addProduct.rejected, (state, action) => {
+      state.error = action.error.message || "An error occurred"
+      state.isLoading = false
+    })
+    builder.addCase(updateProduct.fulfilled, (state, action) => {
+      const index = state.products.findIndex(
+        (product) => product.productId === action.payload.data.productId
+      )
+      if (index !== -1) {
+        state.products[index] = action.payload.data
+      }
+      state.isLoading = false
+      state.error = null
+    })
+    builder.addCase(updateProduct.rejected, (state, action) => {
+      state.error = action.error.message || "An error occurred"
+      state.isLoading = false
+    })
+    builder.addCase(deleteProduct.fulfilled, (state, action) => {
+      state.products = state.products.filter(
+        (product) => product.productId !== action.meta.arg.productId
+      )
+      state.isLoading = false
+    })
+    builder.addCase(deleteProduct.rejected, (state, action) => {
+      state.error = action.error.message || "An error occurred"
+      state.isLoading = false
+    })
     builder.addMatcher(
       (action) => action.type.endsWith("/pending"),
       (state) => {
@@ -68,14 +141,6 @@ const productSlice = createSlice({
         state.isLoading = true
       }
     )
-
-    // builder.addMatcher(
-    //   (action) => action.type.endsWith("/rejected"),
-    //   (state) => {
-    //     state.error = "An error occurred"
-    //     state.isLoading = false
-    //   }
-    // )
   }
 })
 

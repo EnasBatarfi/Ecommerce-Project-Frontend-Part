@@ -11,8 +11,8 @@ export type Product = {
   updatedAt: string
   categoryId: string
   adminId: string
-  reviews: []
-  orderProducts: []
+  reviews: any[]
+  orderProducts: any[]
 }
 
 export type ProductState = {
@@ -37,7 +37,6 @@ export type Customer = {
   createdAt?: string
   resetToken?: string | null
   resetTokenExpiration?: string | null
-  isAdmin: boolean
   // addresses: Address[];
   // orders: Order[];
   // reviews: Review[];
@@ -50,6 +49,7 @@ export type CustomerState = {
   customerData: Customer | null
   token: string | null
   isLoggedIn: boolean
+  isAdmin: boolean
 }
 
 export type RegisterFormData = {
@@ -64,4 +64,73 @@ export type RegisterFormData = {
 export type LoginFormData = {
   email: string
   password: string
+}
+
+export type Admin = {
+  adminId?: string
+  firstName: string
+  lastName: string
+  email: string
+  mobile: string
+  password: string
+  image: string
+  createdAt?: string
+  resetToken?: string | null
+  resetTokenExpiration?: string | null
+}
+
+export interface AdminState {
+  admin: Admin | null
+  error: string | null
+  isLoading: boolean
+  adminData: Admin | null
+  token: string | null
+  isLoggedIn: boolean
+  isAdmin: boolean
+}
+
+export type loginData = {
+  userData: Admin | Customer | null
+  token: string | null
+  isLoggedIn: boolean
+  isAdmin: boolean
+}
+
+export type UpdateCustomerProfileFormData = {
+  firstName: string
+  lastName: string
+  email: string
+  mobile: string
+  image: string
+}
+export type UpdateCategoryFormData = {
+  name: string
+  description: string
+}
+
+export type Category = {
+  categoryId: string
+  name: string
+  slug: string
+  description: string
+  createdAt: string
+  adminId: string
+  products: Product[]
+}
+
+export type CategoryState = {
+  categories: Category[]
+  totalPages: number
+  category: Category | null
+  error: null | string
+  isLoading: boolean
+}
+
+export type UpdateProductFormData = {
+  name: string
+  description: string
+  price: number
+  stockQuantity: number
+  sku: string
+  imgUrl: string
 }
