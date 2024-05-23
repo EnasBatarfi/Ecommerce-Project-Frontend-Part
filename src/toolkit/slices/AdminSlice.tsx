@@ -1,6 +1,6 @@
 import api from "@/api"
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import { Admin, AdminState, LoginFormData } from "@/types/Types"
+import { Admin, AdminState, LoginFormData, UpdateProfileFormData } from "@/types/Types"
 
 const data =
   localStorage.getItem("adminLoginData") != null
@@ -21,6 +21,33 @@ export const adminLogin = createAsyncThunk(
   "admins/adminLogin",
   async (adminData: LoginFormData) => {
     const response = await api.post("/admins/login", adminData)
+    return response.data
+  }
+)
+
+export const fetchAdminData = createAsyncThunk(
+  "admins/fetchAdminsData",
+  async ({ adminId, token }: { adminId: string; token: string }) => {
+    const response = await api.get(`/admins/${adminId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    return response.data
+  }
+)
+export const updateAdmin = createAsyncThunk(
+  "admins/updateAdminData",
+  async ({
+    adminId,
+    token,
+    updateAdminInfo
+  }: {
+    adminId: string
+    token: string
+    updateAdminInfo: UpdateProfileFormData
+  }) => {
+    const response = await api.put(`/admins/${adminId}`, updateAdminInfo, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
     return response.data
   }
 )
@@ -66,6 +93,44 @@ const adminSlice = createSlice({
       state.error = null
     })
     builder.addCase(adminLogin.rejected, (state, action) => {
+      state.error = action.error.message || "An error occurred"
+      state.isLoading = false
+    })
+    builder.addCase(fetchAdminData.fulfilled, (state, action) => {
+      state.adminData = action.payload.data
+      localStorage.setItem(
+        "adminLoginData",
+        JSON.stringify({
+          isLoggedIn: state.isLoggedIn,
+          token: state.token,
+          adminData: state.adminData,
+          isAdmin: state.isAdmin
+        })
+      )
+      state.isLoading = false
+      state.error = null
+    })
+
+    builder.addCase(updateAdmin.fulfilled, (state, action) => {
+      state.adminData = action.payload.data
+      localStorage.setItem(
+        "adminLoginData",
+        JSON.stringify({
+          isLoggedIn: state.isLoggedIn,
+          token: state.token,
+          adminData: state.adminData,
+          isAdmin: state.isAdmin
+        })
+      )
+      state.isLoading = false
+      state.error = null
+    })
+
+    builder.addCase(fetchAdminData.rejected, (state, action) => {
+      state.error = action.error.message || "An error occurred"
+      state.isLoading = false
+    })
+    builder.addCase(updateAdmin.rejected, (state, action) => {
       state.error = action.error.message || "An error occurred"
       state.isLoading = false
     })

@@ -4,16 +4,16 @@ import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 
 export const AdminSidebar = () => {
-  const { customerData } = useSelector((state: RootState) => state.customerR)
+  const { adminData } = useSelector((state: RootState) => state.adminR)
   return (
     <div>
       <aside className="sidebar-container">
         <div>
           <h2>User Profile</h2>
           <p>
-            {customerData?.firstName} {customerData?.lastName}
+            {adminData?.firstName} {adminData?.lastName}
           </p>
-          <p>{customerData?.email}</p>
+          <p>{adminData?.email}</p>
         </div>
         <ul>
           <li>

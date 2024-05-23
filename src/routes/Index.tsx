@@ -25,6 +25,8 @@ import { CategoryDetails } from "@/pages/CategoryDetails"
 import { AddCategory } from "@/pages/AddCategory"
 import { AddProductPage } from "@/pages/admins/AddProduct"
 import ProductDetailsAdmin from "@/pages/admins/ProductDetails"
+import { Cart } from "@/pages/customers/Cart"
+import { AdminProfile } from "@/pages/admins/AdminProfile"
 
 const Index = () => {
   return (
@@ -42,6 +44,7 @@ const Index = () => {
           <Route path="/dashboard" element={<ProtectedRoute />}>
             <Route path="customer" element={<CustomerDashboard />} />
             <Route path="customer/profile" element={<CustomerProfile />} />
+            <Route path="customer/cart" element={<Cart />} />
             <Route path="customer/orders" element={<CustomerOrders />} />
           </Route>
 
@@ -50,6 +53,7 @@ const Index = () => {
             <Route path="admin/categories" element={<Categories />} />
             <Route path="admin/categories/:slug" element={<CategoryDetails />} />
             <Route path="admin/categories/add" element={<AddCategory />} />
+            <Route path="admin/profile" element={<AdminProfile />} />
             <Route path="admin/products" element={<Products />} />
             <Route path="admin/products/add" element={<AddProductPage />} />
             <Route path="admin/products/:slug" element={<ProductDetailsAdmin />} />

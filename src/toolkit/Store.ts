@@ -3,13 +3,15 @@ import ProductReducer from "./slices/ProductSlice"
 import CustomerReducer from "./slices/CustomerSlice"
 import AdminReducer from "./slices/AdminSlice"
 import CategoryReducer from "./slices/CategorySlice"
+import CartReducer from "./slices/CartSlice"
 
 export const store = configureStore({
   reducer: {
     productR: ProductReducer,
     customerR: CustomerReducer,
     adminR: AdminReducer,
-    categoryR: CategoryReducer
+    categoryR: CategoryReducer,
+    cartR: CartReducer
   }
 })
 

@@ -1,5 +1,5 @@
 import { AppDispatch } from "@/toolkit/Store"
-import { adminLogin } from "@/toolkit/slices/AdminSlice"
+import { adminLogin, fetchAdminData } from "@/toolkit/slices/AdminSlice"
 import { customerLogin, fetchCustomerData } from "@/toolkit/slices/CustomerSlice"
 import { LoginFormData } from "@/types/Types"
 import { SubmitHandler, useForm } from "react-hook-form"
@@ -27,14 +27,20 @@ export const Login = ({ userType }: LoginProps) => {
       ).unwrap()
 
       if (response.token) {
-        if (userType === "customer") {
-          await dispatch(
-            fetchCustomerData({
-              customerId: response.data.userId,
-              token: response.token
-            })
-          )
-        }
+        userType === "customer"
+          ? await dispatch(
+              fetchCustomerData({
+                customerId: response.data.userId,
+                token: response.token
+              })
+            )
+          : await dispatch(
+              fetchAdminData({
+                adminId: response.data.userId,
+                token: response.token
+              })
+            )
+
         toast.success("Login successful")
         navigate(userType === "admin" ? "/dashboard/admin" : "/dashboard/customer")
       } else {

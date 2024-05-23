@@ -44,8 +44,10 @@ export type Customer = {
 
 export type CustomerState = {
   customer: Customer | null
+  customers: Customer[]
   error: null | string
   isLoading: boolean
+  totalPages: number
   customerData: Customer | null
   token: string | null
   isLoggedIn: boolean
@@ -96,7 +98,7 @@ export type loginData = {
   isAdmin: boolean
 }
 
-export type UpdateCustomerProfileFormData = {
+export type UpdateProfileFormData = {
   firstName: string
   lastName: string
   email: string

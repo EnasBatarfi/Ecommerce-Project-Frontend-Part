@@ -1,0 +1,75 @@
+.customerManagementPage {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.heading {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.errorMessage {
+  color: red;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.customerTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.customerTable th,
+.customerTable td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.customerTable th {
+  background-color: #f4f4f4;
+}
+
+.banButton,
+.unbanButton {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.banButton {
+  background-color: #ff4d4d;
+  color: white;
+}
+
+.unbanButton {
+  background-color: #4caf50;
+  color: white;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.paginationButton {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+}
+
+.paginationButton:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}

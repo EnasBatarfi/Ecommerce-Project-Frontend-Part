@@ -1,5 +1,6 @@
 import { CustomerSidebar } from "@/components/layout/sidebars/CustomerSidebar"
 import { AppDispatch, RootState } from "@/toolkit/Store"
+import { updateAdmin } from "@/toolkit/slices/AdminSlice"
 import { updateCustomer } from "@/toolkit/slices/CustomerSlice"
 import { UpdateProfileFormData } from "@/types/Types"
 import React, { useState, useEffect } from "react"
@@ -7,9 +8,9 @@ import { SubmitHandler, useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
 import { toast } from "react-toastify"
 
-export const CustomerProfile = () => {
+export const AdminProfile = () => {
   const dispatch: AppDispatch = useDispatch()
-  const { customerData } = useSelector((state: RootState) => state.customerR)
+  const { adminData } = useSelector((state: RootState) => state.adminR)
   const {
     register,
     handleSubmit,
@@ -20,39 +21,39 @@ export const CustomerProfile = () => {
   const [isFormOpen, setIsFormOpen] = useState(false)
 
   useEffect(() => {
-    if (customerData) {
-      setValue("firstName", customerData.firstName)
-      setValue("lastName", customerData.lastName)
-      setValue("email", customerData.email)
-      setValue("mobile", customerData.mobile)
+    if (adminData) {
+      setValue("firstName", adminData.firstName)
+      setValue("lastName", adminData.lastName)
+      setValue("email", adminData.email)
+      setValue("mobile", adminData.mobile)
     }
-  }, [customerData, setValue])
+  }, [adminData, setValue])
 
   const onSubmit: SubmitHandler<UpdateProfileFormData> = async (data) => {
     try {
-      const token = localStorage.getItem("loginData")
-        ? JSON.parse(localStorage.getItem("loginData") as string).token
+      const token = localStorage.getItem("adminLoginData")
+        ? JSON.parse(localStorage.getItem("adminLoginData") as string).token
         : null
       console.log(data)
       if (!token) {
         throw new Error("Authentication token not found")
       }
-      if (!customerData?.customerId) {
+      if (!adminData?.adminId) {
         throw new Error("Customer ID not found")
       }
 
       const response = await dispatch(
-        updateCustomer({
-          customerId: customerData.customerId,
+        updateAdmin({
+          adminId: adminData.adminId,
           token,
-          updateCustomerInfo: data
+          updateAdminInfo: data
         })
       )
       if (response.meta.requestStatus === "fulfilled") {
         setIsFormOpen(false)
-        toast.success("Customer info updated successfully!")
+        toast.success("Admin info updated successfully!")
       } else {
-        throw new Error("Failed to update customer info")
+        throw new Error("Failed to update admin info")
       }
     } catch (error: any) {
       toast.error(error.message)
@@ -62,17 +63,17 @@ export const CustomerProfile = () => {
     <div className="container flex-space-around">
       <CustomerSidebar />
       <div className="main-container">
-        {customerData && (
+        {adminData && (
           <>
             <img
-              src={customerData.image}
-              alt={`${customerData.firstName} ${customerData.lastName}`}
+              src={adminData.image}
+              alt={`${adminData.firstName} ${adminData.lastName}`}
               className="round-img"
             />
-            <p>{customerData.firstName}</p>
-            <p>{customerData.lastName}</p>
-            <p>{customerData.email}</p>
-            <p>{customerData.mobile}</p>
+            <p>{adminData.firstName}</p>
+            <p>{adminData.lastName}</p>
+            <p>{adminData.email}</p>
+            <p>{adminData.mobile}</p>
             <button
               className="btn"
               onClick={() => {
@@ -87,7 +88,7 @@ export const CustomerProfile = () => {
                   <label htmlFor="firstName">First Name: </label>
                   <input
                     type="text"
-                    defaultValue={customerData.firstName}
+                    defaultValue={adminData.firstName}
                     {...register("firstName", {
                       required: "First name is required",
                       minLength: { value: 2, message: "First name must be at least 2 characters" },
@@ -103,7 +104,7 @@ export const CustomerProfile = () => {
                   <label htmlFor="lastName">Last Name: </label>
                   <input
                     type="text"
-                    defaultValue={customerData.lastName}
+                    defaultValue={adminData.lastName}
                     {...register("lastName", {
                       required: "Last name is required",
                       minLength: { value: 2, message: "Last name must be at least 2 characters" },
@@ -116,7 +117,7 @@ export const CustomerProfile = () => {
                   <label htmlFor="email">Email: </label>
                   <input
                     type="email"
-                    defaultValue={customerData.email}
+                    defaultValue={adminData.email}
                     {...register("email", {
                       required: "Email is required",
                       minLength: { value: 6, message: "Email must be at least 6 characters" },
@@ -133,7 +134,7 @@ export const CustomerProfile = () => {
                   <label htmlFor="mobile">Mobile: </label>
                   <input
                     type="tel"
-                    defaultValue={customerData.mobile}
+                    defaultValue={adminData.mobile}
                     {...register("mobile", {
                       required: "Mobile number is required",
                       pattern: { value: /^\d{10}$/, message: "Mobile number is not valid" }

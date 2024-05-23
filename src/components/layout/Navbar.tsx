@@ -38,10 +38,10 @@ export const Navbar = () => {
               </li>
             )}
 
-            {isLoggedInAdmin && (
+            {isLoggedInCustomer && (
               <li>
-                <Link className="nav__link" to="/dashboard/admin">
-                  admin dashboard
+                <Link className="nav__link" to="/dashboard/customer/cart">
+                  cart
                 </Link>
               </li>
             )}
