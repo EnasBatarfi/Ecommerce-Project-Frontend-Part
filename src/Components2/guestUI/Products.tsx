@@ -13,11 +13,12 @@ export const Products: React.FC<ProductsProps> = ({ filter }) => {
   const { products, isLoading, error, totalPages } = useSelector(
     (state: RootState) => state.productR
   )
+
   const dispatch: AppDispatch = useDispatch()
   const { category, minPrice, maxPrice } = filter
 
   const [pageNumber, setPageNumber] = useState(1)
-  const [pageSize] = useState(10)
+  const [pageSize] = useState(6)
   const [searchTerm, setSearchTerm] = useState("")
   const [sortBy, setSortBy] = useState("name")
 

@@ -212,3 +212,13 @@ export type UpdateOrderFormData = {
   status?: string
   addressId?: string
 }
+export type UpdateAddressFormData = {
+  name: string
+  addressLine1: string
+  addressLine2?: string
+  city: string
+  province: string
+  country: string
+  zipCode?: string
+  customerId: string
+}

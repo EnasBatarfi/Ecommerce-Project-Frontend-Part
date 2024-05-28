@@ -4,6 +4,7 @@ import { AppDispatch, RootState } from "@/Components2/toolkit/Store"
 import styles from "./CustomerOrders.module.css"
 import { Order } from "../types/Types"
 import { CustomerSidebar } from "../layout/sidebars/CustomerSidebar"
+import { fetchCustomerData } from "../toolkit/slices/CustomerSlice"
 
 export const CustomerOrders = () => {
   const dispatch: AppDispatch = useDispatch()
@@ -12,6 +13,11 @@ export const CustomerOrders = () => {
   )
   const [pageNumber, setPageNumber] = useState(1)
   const pageSize = 5
+  useEffect(() => {
+    if (token && customerData?.customerId) {
+      dispatch(fetchCustomerData({ customerId: customerData.customerId, token }))
+    }
+  }, [dispatch, token, customerData?.customerId])
 
   if (!customerData) {
     return <p>No customer data found.</p>
@@ -36,8 +42,8 @@ export const CustomerOrders = () => {
       <CustomerSidebar />
       <div className={styles.mainContainer}>
         <h2 className={styles.title}>Customer Orders</h2>
-        {isLoading && <p>Loading...</p>}
-        {error && <p>Error: {error}</p>}
+        {orders.length > 0 && isLoading && <p>Loading...</p>}
+        {orders.length > 0 && error && <p>Error: {error}</p>}
         {orders && orders.length > 0 ? (
           <>
             <table className={styles.table}>

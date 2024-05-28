@@ -1,18 +1,24 @@
 import React from "react"
 import { Product } from "@/Components2/types/Types"
-import { Link } from "react-router-dom"
-import { useDispatch } from "react-redux"
-import { AppDispatch } from "@/Components2/toolkit/Store"
+import { Link, useNavigate } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { AppDispatch, RootState } from "@/Components2/toolkit/Store"
 import { addItemToCart } from "@/Components2/toolkit/slices/CartSlice"
 import { toast } from "react-toastify"
 import styles from "./SingleProduct.module.css"
 
 export const SingleProduct = (props: { product: Product }) => {
   const dispatch: AppDispatch = useDispatch()
+  const { isLoggedIn } = useSelector((state: RootState) => state.customerR)
+  const navigate = useNavigate()
 
   const handleAddToCart = () => {
-    dispatch(addItemToCart(props.product))
-    toast.success("Product added to cart")
+    if (isLoggedIn) {
+      dispatch(addItemToCart(props.product))
+      toast.success("Product added to cart")
+    } else {
+      navigate("/customerLogin")
+    }
   }
 
   return (

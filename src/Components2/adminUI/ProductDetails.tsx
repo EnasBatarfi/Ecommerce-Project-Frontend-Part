@@ -33,7 +33,7 @@ const ProductDetails = () => {
       await dispatch(fetchProductBySlug(slug))
     }
     fetchData()
-  }, [dispatch, slug])
+  }, [dispatch, slug, isFormOpen])
 
   useEffect(() => {
     if (product) {
@@ -122,14 +122,14 @@ const ProductDetails = () => {
       {error && <p>{error}</p>}
       {product && (
         <div className={styles.productDetails}>
+          {imagePreview && (
+            <img src={imagePreview} alt="Product Image" className={styles.productImage} />
+          )}
           <div className={styles.productDetailsHeader}>
             <h3 className={styles.productName}>Name: {product.name}</h3>
             <p className={styles.productDescription}>Description: {product.description}</p>
             <p className={styles.productPrice}>Price: ${product.price}</p>
             <p className={styles.productQuantity}>Stock Quantity: {product.stockQuantity}</p>
-            {imagePreview && (
-              <img src={imagePreview} alt="Product Image" className={styles.productImage} />
-            )}
           </div>
         </div>
       )}

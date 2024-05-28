@@ -27,7 +27,8 @@
   font-size: 24px;
 }
 
-.addButton {
+.addButton,
+.btn {
   background-color: #6c757d;
   color: white;
   padding: 10px 20px;
@@ -38,32 +39,30 @@
   transition: background-color 0.3s ease;
 }
 
-.addButton:hover {
+.addButton:hover,
+.btn:hover {
   background-color: #5a6268;
 }
 
-.addresses {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: center;
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
 }
 
-.addressCard {
-  flex: 1 1 calc(33.333% - 1rem);
-  background-color: #fff;
-  padding: 1rem;
-  border-radius: 4px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+.table th,
+.table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
 }
 
-.addressName {
-  margin: 0;
+.table th {
+  background-color: #f9f9f9;
   color: #333;
 }
 
-.addressLine {
-  font-size: 16px;
+.table td {
   color: #555;
 }
 
@@ -74,7 +73,7 @@
   margin-top: 1rem;
 }
 
-.pagination button {
+.pageButton {
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -84,11 +83,11 @@
   transition: background-color 0.2s, color 0.2s;
 }
 
-.pagination button:hover {
+.pageButton:hover {
   background-color: #f0f0f0;
 }
 
-.pagination button:disabled {
+.pageButton:disabled {
   background-color: #e0e0e0;
   cursor: not-allowed;
 }
@@ -96,8 +95,4 @@
 .pageButtons {
   display: flex;
   gap: 0.25rem;
-}
-
-.pageButtons button {
-  flex: 0 0 2rem;
 }

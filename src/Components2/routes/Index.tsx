@@ -25,11 +25,12 @@ import { AddCategory } from "@/Components2/adminUI/AddCategory"
 import { AddProduct } from "@/Components2/adminUI/AddProduct"
 import ProductDetailsAdmin from "@/Components2/adminUI/ProductDetails"
 import { AdminProfile } from "@/Components2/adminUI/AdminProfile"
-import Address from "@/Components2/customerUI/Address"
+import { CustomerAddresses } from "@/Components2/customerUI/CustomerAddresses"
 import AddAddress from "@/Components2/customerUI/AddAddress"
 import { AddAdmin } from "@/Components2/adminUI/AddAdmin"
 import { Cart } from "../customerUI/Cart"
 import { CustomerOrders } from "../customerUI/CustomerOrders"
+import { CustomerAddressDetails } from "../customerUI/CustomerAddressDetails"
 
 const Index = () => {
   return (
@@ -47,9 +48,10 @@ const Index = () => {
           <Route path="/dashboard" element={<ProtectedRoute />}>
             <Route path="customer" element={<CustomerDashboard />} />
             <Route path="customer/profile" element={<CustomerProfile />} />
-            <Route path="customer/addresses" element={<Address />} />
+            <Route path="customer/addresses" element={<CustomerAddresses />} />
             <Route path="customer/orders" element={<CustomerOrders />} />
             <Route path="customer/addresses/add" element={<AddAddress />} />
+            <Route path="customer/addresses/:addressId" element={<CustomerAddressDetails />} />
             <Route path="customer/cart" element={<Cart />} />
           </Route>
 
