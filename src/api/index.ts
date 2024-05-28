@@ -5,7 +5,7 @@ let baseURL = "https://ecommerce-project-backend-part.onrender.com/api/"
 
 if (!isDevelopment) {
   // Update this later when you have a working backend server
-  baseURL = "http://localhost:5125/api"
+  baseURL = "https://ecommerce-project-backend-part.onrender.com/api/"
 }
 
 const api = axios.create({

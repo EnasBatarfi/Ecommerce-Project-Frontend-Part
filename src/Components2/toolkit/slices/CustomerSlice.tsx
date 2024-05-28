@@ -3,6 +3,7 @@ import {
   Customer,
   CustomerState,
   LoginFormData,
+  RegisterFormData,
   UpdateProfileFormData
 } from "@/Components2/types/Types"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
@@ -25,7 +26,7 @@ const initialState: CustomerState = {
 }
 export const customerRegister = createAsyncThunk(
   "customers/customerRegister",
-  async (newCustomer: Customer) => {
+  async (newCustomer: RegisterFormData) => {
     const response = await api.post("/customers/register", newCustomer)
     return response.data
   }
