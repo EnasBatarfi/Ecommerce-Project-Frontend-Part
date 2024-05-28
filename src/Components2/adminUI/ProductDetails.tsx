@@ -11,6 +11,7 @@ import {
   fetchProductBySlug,
   updateProduct
 } from "@/Components2/toolkit/slices/ProductSlice"
+import styles from "./ProductDetails.module.css"
 
 const ProductDetails = () => {
   const { slug } = useParams<{ slug: string }>()
@@ -115,37 +116,37 @@ const ProductDetails = () => {
   }
 
   return (
-    <article className="details">
+    <article className={styles.details}>
       <h2>Product Details</h2>
       {isLoading && <p>Loading...</p>}
-      {error && <p>Error: {error}</p>}
+      {error && <p>{error}</p>}
       {product && (
-        <div className="product-details">
-          <div className="product-details__header">
-            <h3 className="product-details__name">Name: {product.name}</h3>
-            <p className="product-details__description">Description: {product.description}</p>
-            <p className="product-details__price">Price: ${product.price}</p>
-            <p className="product-details__quantity">Stock Quantity: {product.stockQuantity}</p>
+        <div className={styles.productDetails}>
+          <div className={styles.productDetailsHeader}>
+            <h3 className={styles.productName}>Name: {product.name}</h3>
+            <p className={styles.productDescription}>Description: {product.description}</p>
+            <p className={styles.productPrice}>Price: ${product.price}</p>
+            <p className={styles.productQuantity}>Stock Quantity: {product.stockQuantity}</p>
             {imagePreview && (
-              <img src={imagePreview} alt="Product Image" className="product-image" />
+              <img src={imagePreview} alt="Product Image" className={styles.productImage} />
             )}
           </div>
         </div>
       )}
       <button
-        className="btn"
+        className={styles.btn}
         onClick={() => {
           setIsFormOpen(!isFormOpen)
         }}
       >
         {isFormOpen ? "Close Edit Product Info" : "Edit Product Info"}
       </button>
-      <button className="btn" onClick={handleDelete}>
+      <button className={styles.btn} onClick={handleDelete}>
         Delete
       </button>
       {isFormOpen && (
         <form onSubmit={handleSubmit(handleEdit)}>
-          <div className="form-field">
+          <div className={styles.formField}>
             <label htmlFor="name">Name: </label>
             <input
               type="text"
@@ -158,7 +159,7 @@ const ProductDetails = () => {
             />
             {errors.name && <p>{errors.name.message}</p>}
           </div>
-          <div className="form-field">
+          <div className={styles.formField}>
             <label htmlFor="description">Description: </label>
             <input
               type="text"
@@ -171,7 +172,7 @@ const ProductDetails = () => {
             />
             {errors.description && <p>{errors.description.message}</p>}
           </div>
-          <div className="form-field">
+          <div className={styles.formField}>
             <label htmlFor="price">Price: </label>
             <input
               type="number"
@@ -183,7 +184,7 @@ const ProductDetails = () => {
             />
             {errors.price && <p>{errors.price.message}</p>}
           </div>
-          <div className="form-field">
+          <div className={styles.formField}>
             <label htmlFor="stockQuantity">Stock Quantity: </label>
             <input
               type="number"
@@ -194,12 +195,14 @@ const ProductDetails = () => {
             />
             {errors.stockQuantity && <p>{errors.stockQuantity.message}</p>}
           </div>
-          <div className="form-field">
+          <div className={styles.formField}>
             <label htmlFor="imgUrl">Product Image:</label>
             <input type="file" accept="image/*" onChange={handleImageUpload} />
             {errors.imgUrl && <p>{errors.imgUrl.message}</p>}
           </div>
-          <button type="submit">Update</button>
+          <button type="submit" className={styles.btn}>
+            Update
+          </button>
         </form>
       )}
     </article>

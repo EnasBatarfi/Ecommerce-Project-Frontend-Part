@@ -21,7 +21,7 @@ export const AddCategory = () => {
     try {
       const adminLoginData = localStorage.getItem("adminLoginData")
       const token = adminLoginData ? JSON.parse(adminLoginData).token : null
-      const adminId = adminLoginData ? JSON.parse(adminLoginData).adminData.userId : null
+      const adminId = adminLoginData ? JSON.parse(adminLoginData).adminData.adminId : null
 
       if (!token) {
         throw new Error("Authentication token not found")

@@ -2,26 +2,51 @@ import React, { useEffect, useState } from "react"
 import { SingleProduct } from "./SingleProduct"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch, RootState } from "@/Components2/toolkit/Store"
-import { fetchProducts } from "@/Components2/toolkit/slices/ProductSlice"
+import { fetchProducts, fetchProductsByCategory } from "@/Components2/toolkit/slices/ProductSlice"
 import styles from "./Products.module.css"
 
-export const Products = () => {
+interface ProductsProps {
+  filter: { category: string; minPrice: number | null; maxPrice: number | null }
+}
+
+export const Products: React.FC<ProductsProps> = ({ filter }) => {
   const { products, isLoading, error, totalPages } = useSelector(
     (state: RootState) => state.productR
   )
   const dispatch: AppDispatch = useDispatch()
+  const { category, minPrice, maxPrice } = filter
 
   const [pageNumber, setPageNumber] = useState(1)
-  const [pageSize] = useState(3) // Default to 3 for demo purposes
+  const [pageSize] = useState(10)
   const [searchTerm, setSearchTerm] = useState("")
-  const [sortBy, setSortBy] = useState("Name")
+  const [sortBy, setSortBy] = useState("name")
 
   useEffect(() => {
-    const fetchData = async () => {
-      await dispatch(fetchProducts({ pageNumber, pageSize, searchTerm, sortBy }))
+    if (category === "all") {
+      dispatch(
+        fetchProducts({
+          pageNumber,
+          pageSize,
+          searchTerm,
+          sortBy,
+          minPrice: minPrice ?? 0,
+          maxPrice: maxPrice ?? Number.MAX_SAFE_INTEGER
+        })
+      )
+    } else {
+      dispatch(
+        fetchProductsByCategory({
+          categorySlug: category,
+          pageNumber,
+          pageSize,
+          searchTerm,
+          sortBy,
+          minPrice: minPrice ?? 0,
+          maxPrice: maxPrice ?? Number.MAX_SAFE_INTEGER
+        })
+      )
     }
-    fetchData()
-  }, [pageNumber, searchTerm, sortBy, dispatch])
+  }, [dispatch, category, minPrice, maxPrice, pageNumber, pageSize, searchTerm, sortBy])
 
   const handleNextPage = () => {
     setPageNumber((currentPage) => currentPage + 1)
@@ -55,10 +80,10 @@ export const Products = () => {
         <h2>List of Products</h2>
         <div>
           <select name="sort" id="sort" onChange={handleSortChange}>
-            <option value="Name">Name</option>
-            <option value="Price">Price</option>
-            <option value="CreatedAt">Created At</option>
-            <option value="UpdatedAt">Updated At</option>
+            <option value="name">Name</option>
+            <option value="price">Price</option>
+            <option value="createdAt">Created At</option>
+            <option value="updatedAt">Updated At</option>
           </select>
         </div>
       </div>

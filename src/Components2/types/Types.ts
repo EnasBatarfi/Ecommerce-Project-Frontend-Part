@@ -11,8 +11,20 @@ export type Product = {
   updatedAt: string
   categoryId: string
   adminId: string
-  reviews: any[]
-  orderProducts: any[]
+  reviews: Review[]
+  orderProducts: OrderProduct[]
+}
+
+export type Review = {
+  reviewId?: string
+  rating: number
+  comment: string
+  reviewDate: string
+  status: string
+  isAnonymous: boolean
+  productId: string
+  customerId: string
+  orderId: string
 }
 
 export type ProductState = {
@@ -82,6 +94,7 @@ export type Admin = {
 }
 
 export interface AdminState {
+  totalPages: number
   admin: Admin | null
   admins: Admin[]
   error: string | null

@@ -31,8 +31,14 @@ export const CustomersManagement = () => {
       return
     }
     try {
-      await dispatch(banCustomer({ customerId, token }))
-      toast.success("Customer banned successfully")
+      const confirmation = window.confirm(
+        `Are you sure you want to ban the customer "${customerId}"?`
+      )
+
+      if (confirmation) {
+        await dispatch(banCustomer({ customerId, token }))
+        toast.success("Customer banned successfully")
+      }
     } catch (error: any) {
       toast.error("Failed to ban customer")
     }
@@ -44,8 +50,14 @@ export const CustomersManagement = () => {
       return
     }
     try {
-      await dispatch(unbanCustomer({ customerId, token }))
-      toast.success("Customer unbanned successfully")
+      const confirmation = window.confirm(
+        `Are you sure you want to unban the customer "${customerId}"?`
+      )
+
+      if (confirmation) {
+        await dispatch(unbanCustomer({ customerId, token }))
+        toast.success("Customer unbanned successfully")
+      }
     } catch (error: any) {
       toast.error("Failed to unban customer")
     }

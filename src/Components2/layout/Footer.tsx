@@ -33,7 +33,7 @@ export const Footer = () => {
         </a>
       </div>
       <div className={styles.copyright}>
-        <p>&copy; 2024 Enas Express. All rights reserved.</p>
+        <p>&copy; 2024 Beauty Bliss. All rights reserved.</p>
         <p>
           Made with <i className="fas fa-heart"></i> from Enas to all women in the world.
         </p>

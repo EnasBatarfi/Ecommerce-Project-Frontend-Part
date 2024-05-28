@@ -1,12 +1,13 @@
 import { AppDispatch, RootState } from "@/Components2/toolkit/Store"
 import { updateCustomer } from "@/Components2/toolkit/slices/CustomerSlice"
 import { UpdateProfileFormData } from "@/Components2/types/Types"
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, ChangeEvent } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
 import { toast } from "react-toastify"
 import { CustomerSidebar } from "../layout/sidebars/CustomerSidebar"
 import styles from "./CustomerProfile.module.css"
+import { UploadImage } from "../helpers/UploadImage"
 
 export const CustomerProfile = () => {
   const dispatch: AppDispatch = useDispatch()
@@ -56,6 +57,18 @@ export const CustomerProfile = () => {
       }
     } catch (error: any) {
       toast.error(error.message)
+    }
+  }
+
+  const handleImageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (file) {
+      try {
+        const url = await UploadImage(file)
+        setValue("image", url)
+      } catch (error) {
+        toast.error("Image upload failed")
+      }
     }
   }
 
@@ -147,6 +160,11 @@ export const CustomerProfile = () => {
                     })}
                   />
                   {errors.mobile && <p className={styles.errorMessage}>{errors.mobile.message}</p>}
+                </div>
+                <div className={styles.formField}>
+                  <label htmlFor="image">Profile Image:</label>
+                  <input type="file" accept="image/*" onChange={handleImageUpload} />
+                  {errors.image && <p className={styles.error}>{errors.image.message}</p>}
                 </div>
                 <button type="submit" className={styles.updateButton}>
                   Update

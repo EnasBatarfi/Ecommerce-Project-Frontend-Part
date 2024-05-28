@@ -97,7 +97,9 @@ export const AddAdmin: React.FC = () => {
               pattern: {
                 value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
                 message: "Invalid email address"
-              }
+              },
+              minLength: { value: 2, message: "Last name must be at least 2 characters" },
+              maxLength: { value: 100, message: "Last name must not exceed 100 characters" }
             })}
           />
           {errors.email && <p className={styles.error}>{errors.email.message}</p>}

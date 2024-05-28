@@ -7,6 +7,7 @@ const data = localStorage.getItem("adminLoginData")
   : { adminData: null, token: null, isLoggedIn: false, isAdmin: false }
 
 const initialState: AdminState = {
+  totalPages: 1,
   admin: null,
   admins: [],
   error: null,
@@ -65,8 +66,16 @@ export const addNewAdmin = createAsyncThunk(
 
 export const fetchAllAdmins = createAsyncThunk(
   "admins/fetchAllAdmins",
-  async ({ token }: { token: string }) => {
-    const response = await api.get("/admins", {
+  async ({
+    pageNumber,
+    pageSize,
+    token
+  }: {
+    pageNumber: number
+    pageSize: number
+    token: string
+  }) => {
+    const response = await api.get(`/admins?currentPage=${pageNumber}&pageSize=${pageSize}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
     return response.data
@@ -164,6 +173,7 @@ const adminSlice = createSlice({
     })
     builder.addCase(fetchAllAdmins.fulfilled, (state, action) => {
       state.admins = action.payload.data
+      state.totalPages = action.payload.meta.totalPages
       state.isLoading = false
     })
     builder.addCase(fetchAllAdmins.rejected, (state, action) => {

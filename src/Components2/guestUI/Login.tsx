@@ -1,6 +1,10 @@
 import { AppDispatch } from "@/Components2/toolkit/Store"
-import { adminLogin, fetchAdminData } from "@/Components2/toolkit/slices/AdminSlice"
-import { customerLogin, fetchCustomerData } from "@/Components2/toolkit/slices/CustomerSlice"
+import { adminLogin, adminLogout, fetchAdminData } from "@/Components2/toolkit/slices/AdminSlice"
+import {
+  customerLogin,
+  customerLogout,
+  fetchCustomerData
+} from "@/Components2/toolkit/slices/CustomerSlice"
 import { LoginFormData } from "@/Components2/types/Types"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { useDispatch } from "react-redux"
@@ -28,20 +32,25 @@ export const Login = ({ userType }: LoginProps) => {
       ).unwrap()
 
       if (response.token) {
-        userType === "customer"
-          ? await dispatch(
-              fetchCustomerData({
-                customerId: response.data.userId,
-                token: response.token
-              })
-            )
-          : await dispatch(
-              fetchAdminData({
-                adminId: response.data.userId,
-                token: response.token
-              })
-            )
-
+        const userData =
+          userType === "customer"
+            ? await dispatch(
+                fetchCustomerData({
+                  customerId: response.data.userId,
+                  token: response.token
+                })
+              )
+            : await dispatch(
+                fetchAdminData({
+                  adminId: response.data.userId,
+                  token: response.token
+                })
+              )
+        if (userData.payload.data.isBanned) {
+          dispatch(customerLogout())
+          dispatch(adminLogout())
+          throw new Error("Your account is banned")
+        }
         toast.success("Login successful")
         navigate(userType === "admin" ? "/dashboard/admin" : "/dashboard/customer")
       } else {

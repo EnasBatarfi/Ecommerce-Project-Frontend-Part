@@ -75,6 +75,15 @@ export const deleteOrder = createAsyncThunk(
     return response.data
   }
 )
+export const fetchCustomerOrders = createAsyncThunk(
+  "orders/fetchCustomerOrders",
+  async ({ token, customerId }: { token: string; customerId: string }) => {
+    const response = await api.get(`/orders/customer/${customerId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    return response.data
+  }
+)
 
 const orderSlice = createSlice({
   name: "orders",

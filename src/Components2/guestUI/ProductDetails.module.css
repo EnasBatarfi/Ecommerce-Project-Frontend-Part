@@ -68,6 +68,48 @@
   color: #666;
   margin-top: 0.5rem;
 }
+.reviews {
+  margin-top: 2rem;
+}
+
+.review {
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.reviewRating,
+.reviewComment,
+.reviewDate,
+.reviewStatus,
+.reviewAnonymous {
+  margin-bottom: 0.5rem;
+}
+
+.reviewRating {
+  font-weight: bold;
+}
+
+.reviewComment {
+  font-style: italic;
+}
+
+.reviewDate {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.reviewStatus {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.reviewAnonymous {
+  font-size: 0.9rem;
+  color: #888;
+}
 
 @media (min-width: 768px) {
   .product-details {

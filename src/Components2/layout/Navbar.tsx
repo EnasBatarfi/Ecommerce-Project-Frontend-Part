@@ -24,28 +24,45 @@ export const Navbar = () => {
             Home
           </Link>
         </li>
-        {(isLoggedInCustomer || isLoggedInAdmin) && (
+        {isLoggedInCustomer && (
           <>
             <li>
-              <button className={styles.navButton} onClick={handleLogout}>
-                Logout
-              </button>
+              <Link className={styles.navLink} to="/dashboard/customer">
+                Dashboard
+              </Link>
             </li>
-            {isLoggedInCustomer && (
-              <li>
-                <Link className={styles.navLink} to="/dashboard/customer">
-                  Dashboard
-                </Link>
-              </li>
-            )}
-            {isLoggedInCustomer && (
-              <li>
-                <Link className={styles.navLink} to="/dashboard/customer/cart">
-                  Cart
-                </Link>
-              </li>
-            )}
+            <li>
+              <Link className={styles.navLink} to="/dashboard/customer/cart">
+                Cart
+              </Link>
+            </li>
           </>
+        )}
+        {isLoggedInAdmin && (
+          <>
+            <li>
+              <Link className={styles.navLink} to="/dashboard/admin">
+                Admin Dashboard
+              </Link>
+            </li>
+            <li>
+              <Link className={styles.navLink} to="/dashboard/admin/products">
+                Manage Products
+              </Link>
+            </li>
+            <li>
+              <Link className={styles.navLink} to="/dashboard/admin/categories">
+                Manage Categories
+              </Link>
+            </li>
+          </>
+        )}
+        {(isLoggedInCustomer || isLoggedInAdmin) && (
+          <li>
+            <button className={styles.navButton} onClick={handleLogout}>
+              Logout
+            </button>
+          </li>
         )}
         {!isLoggedInCustomer && !isLoggedInAdmin && (
           <>

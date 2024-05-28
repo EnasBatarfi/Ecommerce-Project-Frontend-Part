@@ -18,15 +18,45 @@ export const fetchProducts = createAsyncThunk(
     pageNumber,
     pageSize,
     searchTerm,
-    sortBy
+    sortBy,
+    minPrice,
+    maxPrice
   }: {
     pageNumber: number
     pageSize: number
     searchTerm: string
     sortBy: string
+    minPrice: number | null
+    maxPrice: number | null
   }) => {
     const response = await api.get(
-      `/products?pageNumber=${pageNumber}&pageSize=${pageSize}&searchTerm=${searchTerm}&sortBy=${sortBy}`
+      `/products?pageNumber=${pageNumber}&pageSize=${pageSize}&searchTerm=${searchTerm}&sortBy=${sortBy}&minPrice=${minPrice}&maxPrice=${maxPrice}`
+    )
+    return response.data
+  }
+)
+
+export const fetchProductsByCategory = createAsyncThunk(
+  "products/fetchProductsByCategory",
+  async ({
+    categorySlug,
+    pageNumber,
+    pageSize,
+    searchTerm,
+    sortBy,
+    minPrice,
+    maxPrice
+  }: {
+    categorySlug: string
+    pageNumber: number
+    pageSize: number
+    searchTerm: string
+    sortBy: string
+    minPrice: number | null
+    maxPrice: number | null
+  }) => {
+    const response = await api.get(
+      `/products/category/${categorySlug}?pageNumber=${pageNumber}&pageSize=${pageSize}&searchTerm=${searchTerm}&sortBy=${sortBy}&minPrice=${minPrice}&maxPrice=${maxPrice}`
     )
     return response.data
   }
@@ -43,7 +73,6 @@ export const fetchProductBySlug = createAsyncThunk(
 export const addProduct = createAsyncThunk(
   "products/addProduct",
   async ({ token, newProductInfo }: { token: string; newProductInfo: Product }) => {
-    console.log(newProductInfo)
     const response = await api.post("/products", newProductInfo, {
       headers: { Authorization: `Bearer ${token}` }
     })
@@ -98,6 +127,15 @@ const productSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(fetchProductBySlug.rejected, (state, action) => {
+      state.error = action.error.message || "An error occurred"
+      state.isLoading = false
+    })
+    builder.addCase(fetchProductsByCategory.fulfilled, (state, action) => {
+      state.products = action.payload.data
+      state.totalPages = action.payload.meta.totalPages
+      state.isLoading = false
+    })
+    builder.addCase(fetchProductsByCategory.rejected, (state, action) => {
       state.error = action.error.message || "An error occurred"
       state.isLoading = false
     })

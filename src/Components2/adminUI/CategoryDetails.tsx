@@ -9,6 +9,7 @@ import {
 } from "@/Components2/toolkit/slices/CategorySlice"
 import { toast } from "react-toastify"
 import { useForm, SubmitHandler } from "react-hook-form"
+import styles from "./CategoryDetails.module.css"
 
 type UpdateCategoryFormData = {
   name: string
@@ -100,32 +101,32 @@ export const CategoryDetails = () => {
   }
 
   return (
-    <article className="details">
+    <article className={styles.details}>
       <h2>Category Details</h2>
       {isLoading && <p>Loading...</p>}
-      {error && <p>Error: {error}</p>}
+      {error && <p>{error}</p>}
       {category && (
-        <div className="category-details">
-          <div className="category-details__header">
-            <h3 className="category-details__name">Name: {category.name}</h3>
-            <p className="category-details__description">Description: {category.description}</p>
+        <div className={styles.categoryDetails}>
+          <div className={styles.categoryDetailsHeader}>
+            <h3 className={styles.categoryName}>Name: {category.name}</h3>
+            <p className={styles.categoryDescription}>Description: {category.description}</p>
           </div>
         </div>
       )}
       <button
-        className="btn"
+        className={styles.btn}
         onClick={() => {
           setIsFormOpen(!isFormOpen)
         }}
       >
         {isFormOpen ? "Close Edit Category Info" : "Edit Category Info"}
       </button>
-      <button className="btn" onClick={handleDelete}>
+      <button className={styles.btn} onClick={handleDelete}>
         Delete
       </button>
       {isFormOpen && (
         <form onSubmit={handleSubmit(handleEdit)}>
-          <div className="form-field">
+          <div className={styles.formField}>
             <label htmlFor="name">Name: </label>
             <input
               type="text"
@@ -138,20 +139,21 @@ export const CategoryDetails = () => {
             />
             {errors.name && <p>{errors.name.message}</p>}
           </div>
-          <div className="form-field">
+          <div className={styles.formField}>
             <label htmlFor="description">Description: </label>
             <input
               type="text"
               defaultValue={category?.description}
               {...register("description", {
                 required: "Description is required",
-                minLength: { value: 2, message: "Description must be at least 2 characters" },
-                maxLength: { value: 255, message: "Description must not exceed 255 characters" }
+                maxLength: { value: 300, message: "Description must not exceed 300 characters" }
               })}
             />
             {errors.description && <p>{errors.description.message}</p>}
           </div>
-          <button type="submit">Update</button>
+          <button type="submit" className={styles.btn}>
+            Update
+          </button>
         </form>
       )}
     </article>

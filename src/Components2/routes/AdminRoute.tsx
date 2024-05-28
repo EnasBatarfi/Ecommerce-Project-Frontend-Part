@@ -6,8 +6,6 @@ import { AdminLogin } from "../ExportPages"
 
 export const AdminRoute = () => {
   const { isLoggedIn, isAdmin } = useSelector((state: RootState) => state.adminR)
-  console.log(isLoggedIn)
-  console.log(isAdmin)
 
   return isLoggedIn && isAdmin ? <Outlet /> : <AdminLogin />
 }

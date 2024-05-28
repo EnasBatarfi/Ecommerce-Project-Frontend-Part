@@ -8,7 +8,6 @@ import {
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { AppDispatch, RootState } from "../Store"
 import { useDispatch } from "react-redux"
-import { getLocalStorage } from "@/helpers/localStorage"
 const data = localStorage.getItem("loginData")
   ? JSON.parse(String(localStorage.getItem("loginData")))
   : { customerData: null, token: null, isLoggedIn: false, isAdmin: false }
@@ -76,11 +75,9 @@ export const fetchAllCustomers = createAsyncThunk(
     pageSize: number
     token: string
   }) => {
-    console.log(pageNumber)
     const response = await api.get(`/customers?currentPage=${pageNumber}&pageSize=${pageSize}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
-    console.log(response)
     return response.data
   }
 )

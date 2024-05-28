@@ -29,6 +29,7 @@ import Address from "@/Components2/customerUI/Address"
 import AddAddress from "@/Components2/customerUI/AddAddress"
 import { AddAdmin } from "@/Components2/adminUI/AddAdmin"
 import { Cart } from "../customerUI/Cart"
+import { CustomerOrders } from "../customerUI/CustomerOrders"
 
 const Index = () => {
   return (
@@ -47,7 +48,8 @@ const Index = () => {
             <Route path="customer" element={<CustomerDashboard />} />
             <Route path="customer/profile" element={<CustomerProfile />} />
             <Route path="customer/addresses" element={<Address />} />
-            <Route path="customer/addresses/add" element={<AddAddress />} />{" "}
+            <Route path="customer/orders" element={<CustomerOrders />} />
+            <Route path="customer/addresses/add" element={<AddAddress />} />
             <Route path="customer/cart" element={<Cart />} />
           </Route>
 

@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch, RootState } from "@/Components2/toolkit/Store"
 import { fetchProducts } from "@/Components2/toolkit/slices/ProductSlice"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { AdminSidebar } from "../layout/sidebars/AdminSidebar"
+// import { SingleProduct } from "@/Components2/adminUI/SingleProduct"
 import styles from "./ProductsManagement.module.css"
 
 export const ProductsManagement = () => {
@@ -18,7 +19,16 @@ export const ProductsManagement = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await dispatch(fetchProducts({ pageNumber, pageSize, searchTerm: "", sortBy: "name" }))
+      await dispatch(
+        fetchProducts({
+          pageNumber,
+          pageSize,
+          searchTerm: "",
+          sortBy: "name",
+          minPrice: 0,
+          maxPrice: Number.MAX_SAFE_INTEGER
+        })
+      )
     }
     fetchData()
   }, [dispatch, pageNumber, pageSize])
@@ -26,7 +36,6 @@ export const ProductsManagement = () => {
   const handleNextPage = () => {
     setPageNumber((currentPage) => currentPage + 1)
   }
-
   const handlePreviousPage = () => {
     setPageNumber((currentPage) => currentPage - 1)
   }
@@ -53,8 +62,7 @@ export const ProductsManagement = () => {
               <tr>
                 <th>Name</th>
                 <th>Description</th>
-                <th>Price</th>
-                <th>Category</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -62,8 +70,11 @@ export const ProductsManagement = () => {
                 <tr key={product.productId}>
                   <td>{product.name}</td>
                   <td>{product.description}</td>
-                  <td>${product.price}</td>
-                  <td>{product.categoryId}</td>
+                  <td>
+                    <Link to={`/dashboard/admin/products/${product.slug}`}>
+                      <button className={styles.btn}>View Details</button>
+                    </Link>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -101,3 +112,5 @@ export const ProductsManagement = () => {
     </div>
   )
 }
+
+export default ProductsManagement

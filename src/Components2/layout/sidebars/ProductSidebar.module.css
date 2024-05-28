@@ -1,0 +1,84 @@
+.sidebarContainer {
+  width: 250px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.filterSection {
+  margin-bottom: 20px;
+}
+
+.filterSection h3 {
+  color: #333;
+  font-size: 20px;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 5px;
+}
+
+.categoryList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.categoryList li {
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.categoryList li:hover {
+  background-color: #f0f0f0;
+}
+
+.active {
+  background-color: #f0f0f0;
+  color: #fff;
+}
+
+.priceFilter {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.priceFilter label {
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.priceInput {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.btn {
+  background-color: #f0f0f0;
+  color: #000;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.btn:hover {
+  background-color: #f0f0f0;
+  color: #000;
+}
+
+@media (max-width: 768px) {
+  .sidebarContainer {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}

@@ -1,12 +1,13 @@
 import { AppDispatch, RootState } from "@/Components2/toolkit/Store"
 import { updateAdmin } from "@/Components2/toolkit/slices/AdminSlice"
 import { UpdateProfileFormData } from "@/Components2/types/Types"
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, ChangeEvent } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
 import { toast } from "react-toastify"
 import { AdminSidebar } from "../layout/sidebars/AdminSidebar"
 import styles from "./AdminProfile.module.css"
+import { UploadImage } from "../helpers/UploadImage"
 
 export const AdminProfile = () => {
   const dispatch: AppDispatch = useDispatch()
@@ -56,6 +57,17 @@ export const AdminProfile = () => {
       }
     } catch (error: any) {
       toast.error(error.message)
+    }
+  }
+  const handleImageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (file) {
+      try {
+        const url = await UploadImage(file)
+        setValue("image", url)
+      } catch (error) {
+        toast.error("Image upload failed")
+      }
     }
   }
 
@@ -147,6 +159,11 @@ export const AdminProfile = () => {
                     })}
                   />
                   {errors.mobile && <p className={styles.errorMessage}>{errors.mobile.message}</p>}
+                </div>
+                <div className={styles.formField}>
+                  <label htmlFor="image">Profile Image:</label>
+                  <input type="file" accept="image/*" onChange={handleImageUpload} />
+                  {errors.image && <p className={styles.error}>{errors.image.message}</p>}
                 </div>
                 <button type="submit" className={styles.updateButton}>
                   Update

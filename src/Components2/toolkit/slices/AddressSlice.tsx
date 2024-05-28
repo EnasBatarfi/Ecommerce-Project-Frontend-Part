@@ -10,33 +10,32 @@ const initialState: AddressState = {
   isLoading: false
 }
 
-export const fetchAddresses = createAsyncThunk(
-  "addresses/fetchAddresses",
+export const fetchCustomerAddresses = createAsyncThunk(
+  "addresses/fetchCustomerAddresses",
   async ({
     token,
+    customerId,
     pageNumber,
-    pageSize,
-    customerId
+    pageSize
   }: {
     token: string
+    customerId: string
     pageNumber: number
     pageSize: number
-    customerId: string
   }) => {
-    const response = await api.get(`/addresses?currentPage=${pageNumber}&pageSize=${pageSize}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-    const filteredAddresses = response.data.data.filter(
-      (address: Address) => address.customerId === customerId
+    const response = await api.get(
+      `/addresses/customer/${customerId}?currentPage=${pageNumber}&pageSize=${pageSize}`,
+      {
+        headers: { Authorization: `Bearer ${token}` }
+      }
     )
-    return { data: filteredAddresses, totalPages: response.data.meta.totalPages }
+    return response.data
   }
 )
 
 export const addAddress = createAsyncThunk(
   "addresses/addAddress",
   async ({ token, newAddress }: { token: string; newAddress: Address }) => {
-    console.log(newAddress)
     const response = await api.post(`/addresses`, newAddress, {
       headers: { Authorization: `Bearer ${token}` }
     })
@@ -50,12 +49,12 @@ const addressSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchAddresses.fulfilled, (state, action) => {
+      .addCase(fetchCustomerAddresses.fulfilled, (state, action) => {
         state.addresses = action.payload.data
-        state.totalPages = action.payload.totalPages
+        state.totalPages = action.payload.meta.totalPages
         state.isLoading = false
       })
-      .addCase(fetchAddresses.rejected, (state, action) => {
+      .addCase(fetchCustomerAddresses.rejected, (state, action) => {
         state.error = action.error.message || "An error occurred"
         state.isLoading = false
       })

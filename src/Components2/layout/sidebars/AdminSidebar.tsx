@@ -9,7 +9,7 @@ export const AdminSidebar = () => {
   return (
     <aside className={styles.sidebarContainer}>
       <div className={styles.profileSection}>
-        <h2>User Profile</h2>
+        <h2>Admin Dashboard</h2>
         <p className={styles.userName}>
           {adminData?.firstName} {adminData?.lastName}
         </p>

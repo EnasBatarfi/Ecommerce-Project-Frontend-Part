@@ -27,7 +27,8 @@
   font-size: 24px;
 }
 
-.addButton {
+.addButton,
+.btn {
   background-color: #6c757d;
   color: white;
   padding: 10px 20px;
@@ -38,7 +39,8 @@
   transition: background-color 0.3s ease;
 }
 
-.addButton:hover {
+.addButton:hover,
+.btn:hover {
   background-color: #5a6268;
 }
 
@@ -62,22 +64,6 @@
 
 .table td {
   color: #555;
-}
-
-.banButton,
-.unbanButton {
-  background-color: #6c757d;
-  color: white;
-  padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.banButton:hover,
-.unbanButton:hover {
-  background-color: #5a6268;
 }
 
 .pagination {
@@ -109,4 +95,8 @@
 .pageButtons {
   display: flex;
   gap: 0.25rem;
+}
+
+.pageButtons button {
+  flex: 0 0 2rem;
 }

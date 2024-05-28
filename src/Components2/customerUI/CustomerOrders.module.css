@@ -1,3 +1,4 @@
+/* CustomerOrders.module.css */
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -13,13 +14,6 @@
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.action {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
 }
 
 .title {
@@ -47,47 +41,6 @@
 
 .table td {
   color: #555;
-}
-
-.select {
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
-  background-color: #fff;
-  transition: border-color 0.2s;
-}
-
-.select:focus {
-  border-color: #6c757d;
-}
-
-.inputNumber {
-  width: 100px;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
-  margin-right: 8px;
-  transition: border-color 0.2s;
-}
-
-.inputNumber:focus {
-  border-color: #6c757d;
-}
-
-.updateButton {
-  background-color: #6c757d;
-  color: white;
-  padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.updateButton:hover {
-  background-color: #5a6268;
 }
 
 .pagination {

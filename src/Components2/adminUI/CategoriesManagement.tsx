@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch, RootState } from "@/Components2/toolkit/Store"
 import { fetchCategories } from "@/Components2/toolkit/slices/CategorySlice"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { AdminSidebar } from "../layout/sidebars/AdminSidebar"
-import { SingleCategory } from "./SingleCategory"
 import styles from "./CategoriesManagement.module.css"
 
 export const CategoriesManagement = () => {
@@ -27,7 +26,6 @@ export const CategoriesManagement = () => {
   const handleNextPage = () => {
     setPageNumber((currentPage) => currentPage + 1)
   }
-
   const handlePreviousPage = () => {
     setPageNumber((currentPage) => currentPage - 1)
   }
@@ -54,6 +52,7 @@ export const CategoriesManagement = () => {
               <tr>
                 <th>Name</th>
                 <th>Description</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -61,6 +60,11 @@ export const CategoriesManagement = () => {
                 <tr key={category.categoryId}>
                   <td>{category.name}</td>
                   <td>{category.description}</td>
+                  <td>
+                    <Link to={`/dashboard/admin/categories/${category.slug}`}>
+                      <button className={styles.btn}>View Details</button>
+                    </Link>
+                  </td>
                 </tr>
               ))}
             </tbody>

@@ -10,7 +10,7 @@ export const CustomerSidebar = () => {
   return (
     <aside className={styles.sidebarContainer}>
       <div className={styles.profileSection}>
-        <h2>User Profile</h2>
+        <h2>User Dashboard</h2>
         <p className={styles.userName}>
           {customerData?.firstName} {customerData?.lastName}
         </p>
@@ -29,7 +29,7 @@ export const CustomerSidebar = () => {
         </li>
         <li className={styles.navItem}>
           <Link to="/dashboard/customer/addresses" className={styles.navLink}>
-            Addresses
+            My Addresses
           </Link>
         </li>
       </ul>

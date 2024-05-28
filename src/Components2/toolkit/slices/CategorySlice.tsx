@@ -13,7 +13,6 @@ export const fetchCategories = createAsyncThunk(
   "products/fetchCategories",
   async ({ pageNumber, pageSize }: { pageNumber: number; pageSize: number }) => {
     const response = await api.get(`/categories?currentPage=${pageNumber}&pageSize=${pageSize}`)
-    console.log(response)
     return response.data
   }
 )
@@ -21,7 +20,6 @@ export const fetchCategoryBySlug = createAsyncThunk(
   "products/fetchCategoryBySlug",
   async (slug: string | undefined) => {
     const response = await api.get(`/categories/${slug}`)
-    console.log(response + "eeeeeeeeeee")
     return response.data
   }
 )

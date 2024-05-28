@@ -29,31 +29,12 @@ export const fetchOrderProduct = createAsyncThunk(
 export const addOrderProduct = createAsyncThunk(
   "orderProducts/addOrderProduct",
   async ({ token, newOrderProductInfo }: { token: string; newOrderProductInfo: OrderProduct }) => {
-    console.log(newOrderProductInfo)
     const response = await api.post("/orderProducts", newOrderProductInfo, {
       headers: { Authorization: `Bearer ${token}` }
     })
     return response.data
   }
 )
-
-// export const updateOrderProduct = createAsyncThunk(
-//   "orderProducts/updateOrderProduct",
-//   async ({
-//     orderProductId,
-//     token,
-//     updateOrderProductInfo
-//   }: {
-//     orderProductId: string
-//     token: string
-//     updateOrderProductInfo: UpdateOrderProductFormData
-//   }) => {
-//     const response = await api.put(`/orderProducts/${orderProductId}`, updateOrderProductInfo, {
-//       headers: { Authorization: `Bearer ${token}` }
-//     })
-//     return response.data
-//   }
-// )
 
 export const deleteOrderProduct = createAsyncThunk(
   "orderProducts/deleteOrderProduct",
@@ -96,20 +77,6 @@ const orderProductSlice = createSlice({
       state.error = action.error.message || "An error occurred"
       state.isLoading = false
     })
-    // builder.addCase(updateOrderProduct.fulfilled, (state, action) => {
-    //   const index = state.orderProducts.findIndex(
-    //     (orderProduct) => orderProduct.orderProductId === action.payload.data.orderProductId
-    //   )
-    //   if (index !== -1) {
-    //     state.orderProducts[index] = action.payload.data
-    //   }
-    //   state.isLoading = false
-    //   state.error = null
-    // })
-    // builder.addCase(updateOrderProduct.rejected, (state, action) => {
-    //   state.error = action.error.message || "An error occurred"
-    //   state.isLoading = false
-    // })
     builder.addCase(deleteOrderProduct.fulfilled, (state, action) => {
       state.orderProducts = state.orderProducts.filter(
         (orderProduct) => orderProduct.orderProductId !== action.meta.arg.orderProductId

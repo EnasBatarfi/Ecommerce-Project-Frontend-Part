@@ -1,11 +1,12 @@
-import React, { useState, ChangeEvent } from "react"
-import { useDispatch } from "react-redux"
-import { AppDispatch } from "@/Components2/toolkit/Store"
+import React, { useState, useEffect, ChangeEvent } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { AppDispatch, RootState } from "@/Components2/toolkit/Store"
 import { useForm, SubmitHandler } from "react-hook-form"
 import { toast } from "react-toastify"
 import { Product } from "@/Components2/types/Types"
 import { useNavigate } from "react-router-dom"
 import { addProduct } from "@/Components2/toolkit/slices/ProductSlice"
+import { fetchCategories } from "@/Components2/toolkit/slices/CategorySlice"
 import { UploadImage } from "@/Components2/helpers/UploadImage"
 import styles from "./AddProduct.module.css"
 
@@ -13,6 +14,8 @@ export const AddProduct = () => {
   const dispatch: AppDispatch = useDispatch()
   const navigate = useNavigate()
   const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const { categories } = useSelector((state: RootState) => state.categoryR)
+
   const {
     register,
     handleSubmit,
@@ -20,11 +23,15 @@ export const AddProduct = () => {
     formState: { errors }
   } = useForm<Product>()
 
+  useEffect(() => {
+    dispatch(fetchCategories({ pageNumber: 1, pageSize: 100 }))
+  }, [dispatch])
+
   const onSubmit: SubmitHandler<Product> = async (data) => {
     try {
       const adminLoginData = localStorage.getItem("adminLoginData")
       const token = adminLoginData ? JSON.parse(adminLoginData).token : null
-      const adminId = adminLoginData ? JSON.parse(adminLoginData).adminData.userId : null
+      const adminId = adminLoginData ? JSON.parse(adminLoginData).adminData.adminId : null
 
       if (!token) {
         throw new Error("Authentication token not found")
@@ -124,6 +131,21 @@ export const AddProduct = () => {
             })}
           />
           {errors.stockQuantity && <p className={styles.error}>{errors.stockQuantity.message}</p>}
+        </div>
+        <div className={styles.formField}>
+          <label htmlFor="category">Category: </label>
+          <select
+            {...register("categoryId", { required: "Category is required" })}
+            className={styles.select}
+          >
+            <option value="">Select Category</option>
+            {categories.map((category) => (
+              <option key={category.categoryId} value={category.categoryId}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+          {errors.categoryId && <p className={styles.error}>{errors.categoryId.message}</p>}
         </div>
         <div className={styles.formField}>
           <label htmlFor="imgUrl">Product Image:</label>

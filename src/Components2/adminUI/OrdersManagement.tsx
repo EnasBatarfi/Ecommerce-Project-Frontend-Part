@@ -5,6 +5,7 @@ import { fetchOrders, updateOrder } from "@/Components2/toolkit/slices/OrderSlic
 import { toast } from "react-toastify"
 import { AdminSidebar } from "../layout/sidebars/AdminSidebar"
 import styles from "./OrdersManagement.module.css"
+import { Order } from "@/Components2/types/Types"
 
 export const OrdersManagement = () => {
   const { orders, isLoading, error, totalPages } = useSelector((state: RootState) => state.orderR)
@@ -13,6 +14,7 @@ export const OrdersManagement = () => {
 
   const [pageNumber, setPageNumber] = useState(1)
   const [pageSize] = useState(5)
+  const [editedPrices, setEditedPrices] = useState<{ [key: string]: number }>({})
 
   useEffect(() => {
     if (token) {
@@ -20,7 +22,7 @@ export const OrdersManagement = () => {
     }
   }, [dispatch, token, pageNumber, pageSize])
 
-  const handleUpdateOrder = async (orderId: string | undefined, updateOrderInfo: any) => {
+  const handleUpdateOrder = async (orderId: string, updateOrderInfo: any) => {
     try {
       if (token && orderId) {
         const response = await dispatch(updateOrder({ orderId, token, updateOrderInfo }))
@@ -33,6 +35,23 @@ export const OrdersManagement = () => {
     } catch (error: any) {
       toast.error(error.message)
     }
+  }
+
+  const confirmAndUpdateOrder = async (orderId: string, updateOrderInfo: any) => {
+    const confirmationMessage = updateOrderInfo.status
+      ? `Are you sure you want to change the status to "${updateOrderInfo.status}"?`
+      : `Are you sure you want to change the price to "${updateOrderInfo.totalPrice}"?`
+
+    if (window.confirm(confirmationMessage)) {
+      await handleUpdateOrder(orderId, updateOrderInfo)
+    }
+  }
+
+  const handlePriceChange = (orderId: string, newPrice: number) => {
+    setEditedPrices((prevPrices) => ({
+      ...prevPrices,
+      [orderId]: newPrice
+    }))
   }
 
   const handleNextPage = () => {
@@ -64,15 +83,18 @@ export const OrdersManagement = () => {
               </tr>
             </thead>
             <tbody>
-              {orders.map((order) => (
+              {orders.map((order: Order) => (
                 <tr key={order.orderId}>
                   <td>{order.orderId}</td>
                   <td>{order.status}</td>
                   <td>${order.totalPrice}</td>
                   <td>
                     <select
+                      className={styles.select}
                       value={order.status}
-                      onChange={(e) => handleUpdateOrder(order.orderId, { status: e.target.value })}
+                      onChange={(e) =>
+                        confirmAndUpdateOrder(order.orderId!, { status: e.target.value })
+                      }
                     >
                       <option value="pending">Pending</option>
                       <option value="confirmed">Confirmed</option>
@@ -83,12 +105,23 @@ export const OrdersManagement = () => {
                   </td>
                   <td>
                     <input
+                      className={styles.inputNumber}
                       type="number"
-                      value={order.totalPrice}
+                      value={editedPrices[order.orderId!] ?? order.totalPrice}
                       onChange={(e) =>
-                        handleUpdateOrder(order.orderId, { totalPrice: parseFloat(e.target.value) })
+                        handlePriceChange(order.orderId!, parseFloat(e.target.value))
                       }
                     />
+                    <button
+                      className={styles.updateButton}
+                      onClick={() =>
+                        confirmAndUpdateOrder(order.orderId!, {
+                          totalPrice: editedPrices[order.orderId!] ?? order.totalPrice
+                        })
+                      }
+                    >
+                      Update Price
+                    </button>
                   </td>
                 </tr>
               ))}

@@ -23,6 +23,19 @@
   border-radius: 4px;
 }
 
+.select {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: #fff;
+  transition: border-color 0.2s;
+}
+
+.select:focus {
+  border-color: #6c757d;
+}
+
 .formField {
   display: flex;
   flex-direction: column;
