@@ -49,9 +49,9 @@ export type Customer = {
   createdAt?: string
   resetToken?: string | null
   resetTokenExpiration?: string | null
-  // addresses: Address[];
-  // orders: Order[];
-  // reviews: Review[];
+  addresses: Address[]
+  orders: Order[]
+  reviews: Review[]
 }
 
 export type CustomerState = {
